@@ -1,31 +1,32 @@
-import {useRef, useState} from "react";
+import { useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
 
 export default function JsEditor(props) {
-    const [jsCode, setJsCode] = useState('console.log("Hello World");');
+  const [jsCode, setJsCode] = useState('console.log("Hello World");');
 
-    // Docs: https://github.com/suren-atoyan/monaco-react
-    const editorRef = useRef(null);
+  // Docs: https://github.com/suren-atoyan/monaco-react
+  const editorRef = useRef(null);
 
-    function handleEditorDidMount(editor, monaco) {
-        console.log("Mount")
-        editorRef.current = editor;
-    }
+  function handleEditorDidMount(editor, monaco) {
+    console.log("Mount");
+    editorRef.current = editor;
+  }
 
-    function showValue() {
-        alert(editorRef.current.getValue());
-    }
+  const onEditorChange = (newContent) => {
+    setJsCode(newContent);
+  };
 
-    return (
-        <div>
-            <label>Enter value : </label>
-            <button onClick={showValue}>Show value</button>
-            <Editor
-                height="90vh"
-                defaultLanguage="javascript"
-                defaultValue="// some comment"
-                onMount={handleEditorDidMount}
-            />
-        </div>
-    );
+  return (
+    <div>
+      <pre>{jsCode}</pre>
+      <Editor
+        height="50vh"
+        defaultLanguage="javascript"
+        value={jsCode}
+        onMount={handleEditorDidMount}
+        onChange={onEditorChange}
+        theme="vs-dark"
+      />
+    </div>
+  );
 }
